@@ -1,2 +1,472 @@
-# anibal-puma10
-DETALLE
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para ti, Sonia - Flores Amarillas 🌻</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #030305;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #fff;
+        }
+
+        /* Pantalla de inicio de alta estética (Glassmorphism) */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #2c1602 0%, #0a0401 60%, #020100 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loader-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 40px 60px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.1);
+            max-width: 90%;
+            animation: floatCard 4s ease-in-out infinite;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .loader-icon {
+            font-size: 70px;
+            animation: pulseGlow 2s infinite alternate;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.6));
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px #ff9900); }
+            100% { transform: scale(1.1); filter: drop-shadow(0 0 25px #ffd700); }
+        }
+
+        .loader-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffe55c;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .loader-subtitle {
+            font-size: 15px;
+            color: #ffcc00;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            opacity: 0.9;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+            color: #1a0800;
+            border: none;
+            padding: 14px 35px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 165, 0, 0.4);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.7);
+        }
+
+        /* Barra superior flotante */
+        #top-bar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(20, 10, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 10px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            pointer-events: auto;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ffea75;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #ffd700;
+        }
+
+        .audio-btn {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .audio-btn:hover {
+            background: #ffd700;
+            color: #000;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Elemento de Audio (Asegúrate de colocar tu archivo yellow.mp3 en la misma carpeta) -->
+    <audio id="bg-music" loop>
+        <source src="yellow.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio.
+    </audio>
+
+    <!-- Pantalla Inicial -->
+    <div id="loader">
+        <div class="loader-card">
+            <div class="loader-icon">🌻</div>
+            <div class="loader-title">SONIA</div>
+            <div class="loader-subtitle">Una galaxia de girasoles para ti</div>
+            <button class="start-btn">ENTRAR Y DESCUBRIR 🌻</button>
+        </div>
+    </div>
+
+    <!-- Barra Superior -->
+    <div id="top-bar">
+        <div class="header-title">SONIA 🌻</div>
+        <div class="audio-controls">
+            <span>♪ Coldplay - Yellow</span>
+            <button class="audio-btn" id="toggle-audio" title="Silenciar / Reproducir">🔊</button>
+        </div>
+    </div>
+
+    <!-- Lienzo interactivo 3D -->
+    <canvas id="universe"></canvas>
+
+    <script>
+        const canvas = document.getElementById('universe');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        let started = false;
+        const music = document.getElementById('bg-music');
+
+        // Botón de inicio
+        document.getElementById('loader').addEventListener('click', () => {
+            music.volume = 0.8;
+            music.play().catch(e => console.log("Audio play prevented:", e));
+
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.style.display = 'none', 1000);
+            
+            document.getElementById('top-bar').style.opacity = '1';
+            started = true;
+        });
+
+        // Control de audio superior
+        const audioBtn = document.getElementById('toggle-audio');
+        audioBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                audioBtn.textContent = '🔊';
+            } else {
+                music.pause();
+                audioBtn.textContent = '🔇';
+            }
+        });
+
+        // Efecto de interacción de ratón / cámara giratoria
+        let mouseX = 0, mouseY = 0;
+        let targetRotationX = 0, targetRotationY = 0;
+        let rotationX = 0, rotationY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - canvas.width / 2) * 0.0005;
+            mouseY = (e.clientY - canvas.height / 2) * 0.0005;
+        });
+
+        // Estrellas de fondo de alta densidad
+        const numStars = 500;
+        const stars = [];
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: (Math.random() - 0.5) * canvas.width * 3,
+                y: (Math.random() - 0.5) * canvas.height * 3,
+                z: Math.random() * canvas.width,
+                size: Math.random() * 2.2 + 0.5,
+                color: Math.random() > 0.3 ? '#ffffff' : '#ffea75'
+            });
+        }
+
+        // Partículas interactivas del cursor
+        const cursorParticles = [];
+        window.addEventListener('mousemove', (e) => {
+            for(let i=0; i<2; i++) {
+                cursorParticles.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    vx: (Math.random() - 0.5) * 2,
+                    vy: (Math.random() - 0.5) * 2,
+                    size: Math.random() * 3 + 1,
+                    alpha: 1
+                });
+            }
+        });
+
+        // Frases románticas dedicadas a Sonia
+        const phrases = [
+            "Mi persona favorita, Sonia", "Un sol para ti", "Por siempre Sonia", 
+            "Contigo todo es mejor", "Eres muy especial, Sonia", "Gracias por existir", 
+            "Flores amarillas para ti", "Feliz día, Sonia", "Siempre brillas con luz propia", "Sonia, mi gran inspiración ❤️"
+        ];
+
+        const floatingItems = [];
+        const numItems = 85;
+
+        for (let i = 0; i < numItems; i++) {
+            floatingItems.push({
+                x: (Math.random() - 0.5) * canvas.width * 2.5,
+                y: (Math.random() - 0.5) * canvas.height * 2.5,
+                z: Math.random() * canvas.width,
+                text: phrases[Math.floor(Math.random() * phrases.length)],
+                type: Math.random() > 0.3 ? 'text' : 'sunflower',
+                scale: Math.random() * 0.7 + 0.5,
+                rotSpeed: (Math.random() - 0.5) * 0.02,
+                angle: Math.random() * Math.PI * 2
+            });
+        }
+
+        // Explosión de pétalos al hacer clic
+        const clickExplosions = [];
+        window.addEventListener('click', (e) => {
+            if(!started) return;
+            for(let i=0; i<25; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 6 + 2;
+                clickExplosions.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    scale: Math.random() * 0.6 + 0.3,
+                    angle: Math.random() * Math.PI * 2,
+                    alpha: 1
+                });
+            }
+        });
+
+        // Dibujar Girasol hiperrealista con espiral de Fibonacci en el centro
+        function drawAdvancedSunflower(x, y, scale, angle) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+            ctx.scale(scale, scale);
+
+            // Pétalos exteriores
+            const petals = 14;
+            for (let i = 0; i < petals; i++) {
+                ctx.rotate((Math.PI * 2) / petals);
+                ctx.beginPath();
+                let grad = ctx.createRadialGradient(0, -28, 2, 0, -28, 25);
+                grad.addColorStop(0, '#fff176');
+                grad.addColorStop(0.6, '#ffca28');
+                grad.addColorStop(1, '#ff8f00');
+                ctx.fillStyle = grad;
+                ctx.shadowColor = '#ff6f00';
+                ctx.shadowBlur = 10;
+                ctx.ellipse(0, -28, 9, 25, 0, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Centro del girasol (Semillas texturizadas)
+            ctx.beginPath();
+            ctx.arc(0, 0, 14, 0, Math.PI * 2);
+            let centerGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 14);
+            centerGrad.addColorStop(0, '#5d4037');
+            centerGrad.addColorStop(1, '#3e2723');
+            ctx.fillStyle = centerGrad;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+
+            // Detalles de semillas con espiral
+            ctx.fillStyle = '#ffecb3';
+            for (let s = 0; s < 8; s++) {
+                let sa = s * 0.8;
+                let sr = s * 1.5;
+                ctx.fillRect(Math.cos(sa) * sr, Math.sin(sa) * sr, 1.5, 1.5);
+            }
+
+            ctx.restore();
+        }
+
+        // Bucle Principal de Renderizado 3D
+        function animate() {
+            // Fondo con estela suave (nebulosa)
+            ctx.fillStyle = 'rgba(3, 3, 5, 0.25)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (started) {
+                targetRotationX = mouseY * 0.8;
+                targetRotationY = mouseX * 0.8;
+                rotationX += (targetRotationX - rotationX) * 0.05;
+                rotationY += (targetRotationY - rotationY) * 0.05;
+
+                const cx = canvas.width / 2;
+                const cy = canvas.height / 2;
+
+                // 1. Renderizar Estrellas de Fondo Warp
+                for (let star of stars) {
+                    star.z -= 4;
+                    if (star.z <= 0) star.z = canvas.width;
+
+                    const k = 300 / star.z;
+                    const px = (star.x + rotationY * 200) * k + cx;
+                    const py = (star.y + rotationX * 200) * k + cy;
+
+                    if (px >= 0 && px <= canvas.width && py >= 0 && py <= canvas.height) {
+                        const size = Math.max(0.1, star.size * k);
+                        ctx.fillStyle = star.color;
+                        ctx.beginPath();
+                        ctx.arc(px, py, size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                }
+
+                // 2. Renderizar Elementos Flotantes (Girasoles y Textos)
+                for (let item of floatingItems) {
+                    item.z -= 2.5;
+                    item.angle += item.rotSpeed;
+                    if (item.z <= 0) {
+                        item.z = canvas.width;
+                        item.x = (Math.random() - 0.5) * canvas.width * 2.5;
+                        item.y = (Math.random() - 0.5) * canvas.height * 2.5;
+                    }
+
+                    const k = 350 / item.z;
+                    const px = item.x * k + cx;
+                    const py = item.y * k + cy;
+
+                    if (px >= -100 && px <= canvas.width + 100 && py >= -100 && py <= canvas.height + 100) {
+                        const currentScale = item.scale * k;
+                        
+                        if (item.type === 'sunflower') {
+                            drawAdvancedSunflower(px, py, currentScale * 1.4, item.angle);
+                        } else {
+                            ctx.save();
+                            ctx.font = `600 ${Math.max(12, 19 * currentScale)}px 'Segoe UI', sans-serif`;
+                            ctx.fillStyle = '#fff9c4';
+                            ctx.shadowColor = '#ffb300';
+                            ctx.shadowBlur = 18;
+                            ctx.textAlign = 'center';
+                            ctx.fillText(item.text, px, py);
+                            ctx.restore();
+                        }
+                    }
+                }
+
+                // 3. Partículas del cursor
+                for (let i = cursorParticles.length - 1; i >= 0; i--) {
+                    let p = cursorParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.alpha -= 0.03;
+                    if (p.alpha <= 0) {
+                        cursorParticles.splice(i, 1);
+                        continue;
+                    }
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fillStyle = '#ffea75';
+                    ctx.shadowColor = '#ff9800';
+                    ctx.shadowBlur = 10;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+
+                // 4. Explosiones de clics
+                for (let i = clickExplosions.length - 1; i >= 0; i--) {
+                    let ex = clickExplosions[i];
+                    ex.x += ex.vx;
+                    ex.y += ex.vy;
+                    ex.alpha -= 0.02;
+                    ex.angle += 0.05;
+                    if (ex.alpha <= 0) {
+                        clickExplosions.splice(i, 1);
+                        continue;
+                    }
+                    ctx.save();
+                    ctx.globalAlpha = ex.alpha;
+                    drawAdvancedSunflower(ex.x, ex.y, ex.scale, ex.angle);
+                    ctx.restore();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
